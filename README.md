@@ -1,6 +1,6 @@
 # QSW-Rank
 
-Code and run logs for the paper **"QSW-Rank: Quantum Stochastic Walks for Ranking Host Risk Under Budget-Limited Attackers"** ([venue, year]).
+Code and run logs for the paper **"QSW-Rank: Quantum Stochastic Walks for Ranking Host Risk Under Budget-Limited Attackers"**.
 
 QSW-Rank ranks the hosts of a MulVAL logical attack graph by how likely a cautious attacker is to compromise them. A quantum stochastic walk starts at the attacker. It jumps forward along attack steps at rates set by each step's success probability (rule probability × CVSS v3.1 exploitability), and it hops both ways along the same links. A host's score is the time the walker spends on it, averaged over the 11 mixing rates ω = 0, 0.1, …, 1. The method needs no labels and no per-network tuning. Because every jump operator joins only two nodes, the Lindblad equation is computed exactly with an N × N density matrix, which needs O(N²) memory instead of O(N⁴).
 
