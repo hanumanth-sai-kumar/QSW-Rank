@@ -1,0 +1,190 @@
+[env] device=cuda | cpu cores=4
+[fresh] 20 fresh graphs, seeds from 300 (main benchmark used 200-211)
+[self-test] classical analogue (w=1) = QSW (w=1): 0.0e+00; unnormalised engine finite -> OK
+  H25_s300 (1/20) | arcs changed by AND-aware weights: 32 | 5s
+  H25_s301 (2/20) | arcs changed by AND-aware weights: 43 | 10s
+  H25_s302 (3/20) | arcs changed by AND-aware weights: 44 | 15s
+  H25_s303 (4/20) | arcs changed by AND-aware weights: 27 | 18s
+  H25_s304 (5/20) | arcs changed by AND-aware weights: 54 | 27s
+  H50_s300 (6/20) | arcs changed by AND-aware weights: 83 | 40s
+  H50_s301 (7/20) | arcs changed by AND-aware weights: 55 | 46s
+  H50_s302 (8/20) | arcs changed by AND-aware weights: 47 | 52s
+  H50_s303 (9/20) | arcs changed by AND-aware weights: 75 | 60s
+  H50_s304 (10/20) | arcs changed by AND-aware weights: 108 | 97s
+  H75_s300 (11/20) | arcs changed by AND-aware weights: 136 | 124s
+  H75_s301 (12/20) | arcs changed by AND-aware weights: 107 | 143s
+  H75_s302 (13/20) | arcs changed by AND-aware weights: 131 | 177s
+  H75_s303 (14/20) | arcs changed by AND-aware weights: 131 | 222s
+  H75_s304 (15/20) | arcs changed by AND-aware weights: 149 | 281s
+  H100_s300 (16/20) | arcs changed by AND-aware weights: 144 | 328s
+  H100_s301 (17/20) | arcs changed by AND-aware weights: 154 | 377s
+  H100_s302 (18/20) | arcs changed by AND-aware weights: 145 | 433s
+  H100_s303 (19/20) | arcs changed by AND-aware weights: 120 | 474s
+  H100_s304 (20/20) | arcs changed by AND-aware weights: 178 | 583s
+[reproducibility] QSW w=0.5 vs previous run: max |NDCG@10 diff| 1.1e-16 over 60 checks
+
+### MEAN OVER FRESH GRAPHS (A*, AO*, PageRank, Markov from the previous run)
+```
+                             NDCG@10                 Spearman                
+attacker                         B10     B30    Binf      B10     B30    Binf
+method                                                                       
+A*                            0.8457  0.8747  0.8631   0.6035  0.6849  0.6361
+AO*                           0.8457  0.8756  0.8666   0.6389  0.7331  0.6683
+Classical analogue w=0.1      0.9429  0.9350  0.7474   0.8075  0.8568  0.2925
+Classical analogue w=0.5      0.9156  0.9124  0.7354   0.8193  0.8689  0.3400
+Ensemble QSW + AO*            0.9353  0.9498  0.8276   0.8101  0.8938  0.5473
+Markov (w=1)                  0.8718  0.8687  0.7294   0.8024  0.8530  0.3277
+PageRank                      0.8204  0.8217  0.7333   0.7857  0.8348  0.3314
+QSW AND-aware                 0.9167  0.9144  0.7382   0.8244  0.8775  0.3447
+QSW AND-aware + unnormalised  0.8934  0.8859  0.7379   0.8323  0.9017  0.3736
+QSW omega-average             0.9563  0.9527  0.7539   0.8142  0.8680  0.3441
+QSW unnormalised jumps        0.8879  0.8807  0.7368   0.8353  0.9012  0.3692
+QSW w=0.1                     0.9679  0.9601  0.7485   0.7462  0.7829  0.2092
+QSW w=0.5                     0.9165  0.9143  0.7368   0.8229  0.8728  0.3402
+```
+
+### E1  QSW minus classical rate analogue (same couplings), Holm over all 12 tests
+```
+                             mean_a  mean_b    diff  wins  losses       p  p_holm
+attacker metric   a                                                              
+B10      NDCG@10  QSW w=0.1  0.9679  0.9429  0.0251    18       2  0.0001  0.0010
+         Spearman QSW w=0.1  0.7462  0.8075 -0.0613     4      16  0.0064  0.0511
+         NDCG@10  QSW w=0.5  0.9165  0.9156  0.0009     9       6  0.2242  1.0000
+         Spearman QSW w=0.5  0.8229  0.8193  0.0036     9      10  0.9851  1.0000
+B30      NDCG@10  QSW w=0.1  0.9601  0.9350  0.0250    17       3  0.0004  0.0043
+         Spearman QSW w=0.1  0.7829  0.8568 -0.0738     3      17  0.0032  0.0315
+         NDCG@10  QSW w=0.5  0.9143  0.9124  0.0019    11       4  0.0697  0.4880
+         Spearman QSW w=0.5  0.8728  0.8689  0.0039    11       8  0.5135  1.0000
+Binf     NDCG@10  QSW w=0.1  0.7485  0.7474  0.0011    11       9  0.7012  1.0000
+         Spearman QSW w=0.1  0.2092  0.2925 -0.0833     4      16  0.0042  0.0380
+         NDCG@10  QSW w=0.5  0.7368  0.7354  0.0014     8       7  0.9553  1.0000
+         Spearman QSW w=0.5  0.3402  0.3400  0.0003     8      11  0.4222  1.0000
+```
+
+### E2-E5 [B10] variant minus comparator (Holm over all 90 tests)
+```
+                                                 mean_a  mean_b    diff  wins  losses       p  p_holm
+a                            b         metric                                                        
+QSW unnormalised jumps       QSW w=0.5 NDCG@10   0.8879  0.9165 -0.0285    11       9  0.5958  1.0000
+                                       Spearman  0.8353  0.8229  0.0124    16       4  0.0240  0.9820
+                             A*        NDCG@10   0.8879  0.8457  0.0422    10      10  0.2024  1.0000
+                                       Spearman  0.8353  0.6035  0.2317    16       4  0.0032  0.2018
+                             AO*       NDCG@10   0.8879  0.8457  0.0422    10      10  0.2024  1.0000
+                                       Spearman  0.8353  0.6389  0.1963    15       5  0.0049  0.2722
+QSW AND-aware                QSW w=0.5 NDCG@10   0.9167  0.9165  0.0002     8       2  0.0994  1.0000
+                                       Spearman  0.8244  0.8229  0.0015    10       3  0.0511  1.0000
+                             A*        NDCG@10   0.9167  0.8457  0.0710    11       9  0.1054  1.0000
+                                       Spearman  0.8244  0.6035  0.2208    15       5  0.0037  0.2156
+                             AO*       NDCG@10   0.9167  0.8457  0.0709    11       9  0.1054  1.0000
+                                       Spearman  0.8244  0.6389  0.1854    14       6  0.0094  0.4152
+QSW AND-aware + unnormalised QSW w=0.5 NDCG@10   0.8934  0.9165 -0.0231    10       9  0.6143  1.0000
+                                       Spearman  0.8323  0.8229  0.0094    14       5  0.0419  1.0000
+                             A*        NDCG@10   0.8934  0.8457  0.0477    11       9  0.0897  1.0000
+                                       Spearman  0.8323  0.6035  0.2288    16       4  0.0037  0.2156
+                             AO*       NDCG@10   0.8934  0.8457  0.0477    11       9  0.0897  1.0000
+                                       Spearman  0.8323  0.6389  0.1934    15       5  0.0049  0.2722
+Ensemble QSW + AO*           QSW w=0.5 NDCG@10   0.9353  0.9165  0.0189    12       8  0.4304  1.0000
+                                       Spearman  0.8101  0.8229 -0.0128     9      11  0.5459  1.0000
+                             A*        NDCG@10   0.9353  0.8457  0.0896    14       6  0.0056  0.3014
+                                       Spearman  0.8101  0.6035  0.2065    16       4  0.0009  0.0621
+                             AO*       NDCG@10   0.9353  0.8457  0.0896    14       6  0.0073  0.3794
+                                       Spearman  0.8101  0.6389  0.1711    17       3  0.0010  0.0732
+QSW omega-average            QSW w=0.5 NDCG@10   0.9563  0.9165  0.0398    17       2  0.0003  0.0249
+                                       Spearman  0.8142  0.8229 -0.0087    10      10  0.8983  1.0000
+                             A*        NDCG@10   0.9563  0.8457  0.1106    12       8  0.0083  0.3988
+                                       Spearman  0.8142  0.6035  0.2106    16       4  0.0073  0.3794
+                             AO*       NDCG@10   0.9563  0.8457  0.1105    12       8  0.0083  0.3988
+                                       Spearman  0.8142  0.6389  0.1752    14       6  0.0153  0.6431
+```
+
+### E2-E5 [B30] variant minus comparator (Holm over all 90 tests)
+```
+                                                 mean_a  mean_b    diff  wins  losses       p  p_holm
+a                            b         metric                                                        
+QSW unnormalised jumps       QSW w=0.5 NDCG@10   0.8807  0.9143 -0.0336    10      10  0.3884  1.0000
+                                       Spearman  0.9012  0.8728  0.0284    18       2  0.0014  0.0945
+                             A*        NDCG@10   0.8807  0.8747  0.0060    10      10  0.9563  1.0000
+                                       Spearman  0.9012  0.6849  0.2163    16       4  0.0037  0.2156
+                             AO*       NDCG@10   0.8807  0.8756  0.0051    10      10  0.9854  1.0000
+                                       Spearman  0.9012  0.7331  0.1681    15       5  0.0083  0.3988
+QSW AND-aware                QSW w=0.5 NDCG@10   0.9144  0.9143  0.0001     7       3  0.2183  1.0000
+                                       Spearman  0.8775  0.8728  0.0047    10       4  0.0884  1.0000
+                             A*        NDCG@10   0.9144  0.8747  0.0397    10      10  0.4304  1.0000
+                                       Spearman  0.8775  0.6849  0.1926    14       6  0.0073  0.3794
+                             AO*       NDCG@10   0.9144  0.8756  0.0388    10      10  0.4304  1.0000
+                                       Spearman  0.8775  0.7331  0.1445    12       8  0.0400  1.0000
+QSW AND-aware + unnormalised QSW w=0.5 NDCG@10   0.8859  0.9143 -0.0284     9      10  0.4009  1.0000
+                                       Spearman  0.9017  0.8728  0.0289    17       2  0.0021  0.1346
+                             A*        NDCG@10   0.8859  0.8747  0.0111    10      10  0.9273  1.0000
+                                       Spearman  0.9017  0.6849  0.2168    16       4  0.0032  0.2018
+                             AO*       NDCG@10   0.8859  0.8756  0.0103    10      10  0.9563  1.0000
+                                       Spearman  0.9017  0.7331  0.1687    15       5  0.0064  0.3386
+Ensemble QSW + AO*           QSW w=0.5 NDCG@10   0.9498  0.9143  0.0355    14       6  0.0897  1.0000
+                                       Spearman  0.8938  0.8728  0.0210    11       9  0.4749  1.0000
+                             A*        NDCG@10   0.9498  0.8747  0.0750    14       6  0.0032  0.2018
+                                       Spearman  0.8938  0.6849  0.2088    16       4  0.0005  0.0372
+                             AO*       NDCG@10   0.9498  0.8756  0.0742    14       6  0.0032  0.2018
+                                       Spearman  0.8938  0.7331  0.1607    16       4  0.0012  0.0846
+QSW omega-average            QSW w=0.5 NDCG@10   0.9527  0.9143  0.0384    16       3  0.0011  0.0773
+                                       Spearman  0.8680  0.8728 -0.0048     9      11  0.6742  1.0000
+                             A*        NDCG@10   0.9527  0.8747  0.0779    13       7  0.0240  0.9820
+                                       Spearman  0.8680  0.6849  0.1831    15       5  0.0083  0.3988
+                             AO*       NDCG@10   0.9527  0.8756  0.0771    13       7  0.0266  1.0000
+                                       Spearman  0.8680  0.7331  0.1350    14       6  0.0400  1.0000
+```
+
+### E2-E5 [Binf] variant minus comparator (Holm over all 90 tests)
+```
+                                                 mean_a  mean_b    diff  wins  losses       p  p_holm
+a                            b         metric                                                        
+QSW unnormalised jumps       QSW w=0.5 NDCG@10   0.7368  0.7368  0.0001    10      10  0.8983  1.0000
+                                       Spearman  0.3692  0.3402  0.0290    15       5  0.0296  1.0000
+                             A*        NDCG@10   0.7368  0.8631 -0.1263     3      17  0.0005  0.0372
+                                       Spearman  0.3692  0.6361 -0.2669     3      17  0.0007  0.0524
+                             AO*       NDCG@10   0.7368  0.8666 -0.1298     2      18  0.0001  0.0054
+                                       Spearman  0.3692  0.6683 -0.2991     2      18  0.0001  0.0087
+QSW AND-aware                QSW w=0.5 NDCG@10   0.7382  0.7368  0.0015     6       4  0.5074  1.0000
+                                       Spearman  0.3447  0.3402  0.0045    10       6  0.1255  1.0000
+                             A*        NDCG@10   0.7382  0.8631 -0.1249     2      18  0.0001  0.0109
+                                       Spearman  0.3447  0.6361 -0.2914     3      17  0.0003  0.0209
+                             AO*       NDCG@10   0.7382  0.8666 -0.1284     1      19  0.0001  0.0054
+                                       Spearman  0.3447  0.6683 -0.3236     1      19  0.0000  0.0005
+QSW AND-aware + unnormalised QSW w=0.5 NDCG@10   0.7379  0.7368  0.0012     9      10  0.7795  1.0000
+                                       Spearman  0.3736  0.3402  0.0333    15       4  0.0076  0.3794
+                             A*        NDCG@10   0.7379  0.8631 -0.1252     2      18  0.0004  0.0308
+                                       Spearman  0.3736  0.6361 -0.2625     3      17  0.0012  0.0846
+                             AO*       NDCG@10   0.7379  0.8666 -0.1287     1      19  0.0000  0.0041
+                                       Spearman  0.3736  0.6683 -0.2947     2      18  0.0002  0.0170
+Ensemble QSW + AO*           QSW w=0.5 NDCG@10   0.8276  0.7368  0.0908    18       2  0.0000  0.0023
+                                       Spearman  0.5473  0.3402  0.2071    20       0  0.0000  0.0002
+                             A*        NDCG@10   0.8276  0.8631 -0.0355     8      12  0.0583  1.0000
+                                       Spearman  0.5473  0.6361 -0.0888     4      16  0.0136  0.5855
+                             AO*       NDCG@10   0.8276  0.8666 -0.0390     8      12  0.0328  1.0000
+                                       Spearman  0.5473  0.6683 -0.1210     4      16  0.0012  0.0846
+QSW omega-average            QSW w=0.5 NDCG@10   0.7539  0.7368  0.0171    12       7  0.0826  1.0000
+                                       Spearman  0.3441  0.3402  0.0039    12       8  0.3683  1.0000
+                             A*        NDCG@10   0.7539  0.8631 -0.1092     6      14  0.0032  0.2018
+                                       Spearman  0.3441  0.6361 -0.2920     4      16  0.0005  0.0372
+                             AO*       NDCG@10   0.7539  0.8666 -0.1127     5      15  0.0012  0.0846
+                                       Spearman  0.3441  0.6683 -0.3242     2      18  0.0000  0.0017
+```
+
+### E6  does QSW minus exact search grow with network size? (fresh graphs)
+```
+                       slope_per_25_hosts  p_slope  spearman_size  p_spearman  diff_H25  diff_H50  diff_H75  diff_H100
+attacker vs  metric                                                                                                   
+B10      A*  NDCG@10               0.0461   0.1630         0.3102      0.1831   -0.0585    0.1426    0.0844     0.1145
+             Spearman              0.1074   0.0549         0.4498      0.0466   -0.0723    0.3650    0.2657     0.3190
+         AO* NDCG@10               0.0461   0.1628         0.3102      0.1831   -0.0586    0.1426    0.0844     0.1145
+             Spearman              0.1170   0.0227         0.5507      0.0119   -0.1104    0.3071    0.2358     0.3033
+B30      A*  NDCG@10               0.0446   0.1286         0.2714      0.2470   -0.0357    0.0321    0.0574     0.1045
+             Spearman              0.1222   0.0205         0.5274      0.0169   -0.0868    0.2755    0.2255     0.3373
+         AO* NDCG@10               0.0456   0.1209         0.2870      0.2199   -0.0391    0.0321    0.0574     0.1045
+             Spearman              0.1309   0.0071         0.6205      0.0035   -0.1464    0.2204    0.1823     0.3027
+Binf     A*  NDCG@10              -0.0452   0.0448        -0.4731      0.0351   -0.0034   -0.2112   -0.0994    -0.1913
+             Spearman             -0.0559   0.3989        -0.1861      0.4320   -0.0760   -0.5437   -0.1802    -0.3836
+         AO* NDCG@10              -0.0410   0.0619        -0.4421      0.0510   -0.0174   -0.2112   -0.0994    -0.1913
+             Spearman             -0.0392   0.5277        -0.1629      0.4927   -0.1438   -0.5615   -0.2177    -0.3891
+```
+
+[fresh] done in 583s. Outputs in /kaggle/working/qsaw_fresh/fresh

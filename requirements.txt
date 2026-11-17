@@ -1,0 +1,7 @@
+# tested with Python 3.13 (CPU) and the Kaggle Python 3 image (GPU)
+numpy>=2.0        # np.trapezoid
+scipy>=1.11
+pandas>=2.0
+matplotlib>=3.7
+# optional: GPU batch over the mixing rates (qsw_batch); without it the engine runs on NumPy
+# torch>=2.0
